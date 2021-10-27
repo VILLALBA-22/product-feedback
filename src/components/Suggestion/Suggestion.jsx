@@ -1,12 +1,21 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 
+const CustomLink = styled(Link)`
+	text-decoration: none;
+`
 const SuggestionElement = styled.div`
 	background: white;
 	margin-bottom: 26px;
 	padding: 25px;
 	border-radius: 10px;
 	font-size: 13px;
+	box-shadow: 0px 2px 10px #8080805c;
+	transition: all 0.2s ease-in-out;
+	&:hover {
+		transform: translateY(-2px);
+	}
 `
 const TitleSuggestion = styled.h3`
 	color: #3a4374;
@@ -29,12 +38,14 @@ const TagSuggestions = styled.p`
 
 export default function Suggestion() {
 	return (
-		<SuggestionElement>
-			<TitleSuggestion>Add tags for solutions</TitleSuggestion>
-			<TextSuggestions>
-				Easier to search for solutions based on a specific stack.
-			</TextSuggestions>
-			<TagSuggestions>Enhancement</TagSuggestions>
-		</SuggestionElement>
+		<CustomLink to='/edit-feedback'>
+			<SuggestionElement>
+				<TitleSuggestion>Add tags for solutions</TitleSuggestion>
+				<TextSuggestions>
+					Easier to search for solutions based on a specific stack.
+				</TextSuggestions>
+				<TagSuggestions>Enhancement</TagSuggestions>
+			</SuggestionElement>
+		</CustomLink>
 	)
 }

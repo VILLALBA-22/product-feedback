@@ -25,6 +25,9 @@ const Container = styled.div`
 	height: calc(100vh - 72px);
 	min-height: 300px;
 	transition: all 0.5s ease;
+	@media (min-width: 700px) {
+		display: none;
+	}
 `
 const CloseMenu = styled.div`
 	position: absolute;

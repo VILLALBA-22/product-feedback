@@ -7,13 +7,22 @@ const Principal = styled.div`
 	padding: 15px 19px;
 	display: flex;
 	justify-content: space-between;
-	background-image: url('./assets/suggestions/mobile/background-header.png');
-	background-size: cover;
-	background-position: center;
+	background: radial-gradient(
+		128.88% 128.88% at 103.9% -10.39%,
+		#e84d70 0%,
+		#a337f6 53.09%,
+		#28a7ed 100%
+	);
 	color: white;
-`
-const Title = styled.h1`
-	font-size: 16px;
+	box-shadow: 0px 2px 10px #8080805c;
+	grid-area: PrincipalTitle;
+	@media (min-width: 700px) {
+		border-radius: 10px;
+		align-items: end;
+	}
+	@media (min-width: 1000px) {
+		height: 135px;
+	}
 `
 const Subtitle = styled.h2`
 	opacity: 0.8;
@@ -33,7 +42,7 @@ export default function PrincipalTitle({ isOpenNav, setIsOpenNav }) {
 	return (
 		<Principal>
 			<div>
-				<Title>Frontend Test</Title>
+				<h1>Frontend Test</h1>
 				<Subtitle>Feedback Board</Subtitle>
 			</div>
 			<button

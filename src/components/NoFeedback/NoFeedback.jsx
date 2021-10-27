@@ -11,21 +11,25 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	@media (min-width: 700px) {
+		margin-top: 0px;
+	}
 `
 const Img = styled.img`
 	margin: 50px auto 40px auto;
 `
 const H3 = styled.h3`
 	text-align: center;
-	font-weight: bold;
 	font-size: 18px;
 	margin-bottom: 14px;
+	color: #3a4374;
 `
 const P = styled.p`
 	text-align: center;
 	color: #647196;
 	font-size: 13px;
 	margin-bottom: 24px;
+	max-width: 410px;
 `
 
 export default function NoFeedback() {
