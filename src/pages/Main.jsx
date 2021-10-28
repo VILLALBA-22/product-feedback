@@ -6,6 +6,7 @@ import NumberSuggestions from '../components/NumberSuggestions/NumberSuggestions
 import PrincipalTitle from '../components/PrincipalTitle/PrincipalTitle'
 import Suggestion from '../components/Suggestion/Suggestion'
 import FilterByCategory from '../components/FilterByCategory/FilterByCategory'
+import { connect } from 'react-redux'
 
 const Container = styled.div`
 	width: 100%;
@@ -59,7 +60,15 @@ const ContainerSuggestions = styled.div`
 	}
 `
 
-export default function Main() {
+function Main({ suggestions, filterTag }) {
+	let filteredSuggestions = null
+	if (filterTag === 'All') {
+		filteredSuggestions = suggestions
+	} else {
+		filteredSuggestions = suggestions.filter(
+			sug => filterTag === sug.category.label
+		)
+	}
 	const [isOpenNav, setIsOpenNav] = useState(false)
 	return (
 		<Container>
@@ -68,11 +77,25 @@ export default function Main() {
 				<FilterByCategory className='category-table-desktop' />
 				<NumberSuggestions />
 				<ContainerSuggestions>
-					{/* <NoFeedback /> */}
-					<Suggestion />
+					{filteredSuggestions.length === 0 ? (
+						<NoFeedback />
+					) : (
+						filteredSuggestions.map(sug => (
+							<Suggestion sug={sug} key={sug.id} />
+						))
+					)}
 				</ContainerSuggestions>
 				<MobileFilter isOpenNav={isOpenNav} setIsOpenNav={setIsOpenNav} />
 			</ContainerMain>
 		</Container>
 	)
 }
+
+const mapStateToProps = state => {
+	return {
+		suggestions: state.suggestions,
+		filterTag: state.filteredSuggestions,
+	}
+}
+
+export default connect(mapStateToProps)(Main)

@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
+import { filteredSuggestions } from '../../store/actions'
+import { connect } from 'react-redux'
 
 const ContainerCategories = styled.div`
 	box-shadow: 0px 2px 10px #8080805c;
@@ -12,8 +14,8 @@ const ContainerCategories = styled.div`
 `
 
 const Category = styled.button`
-	background-color: #f2f4ff;
-	color: #4661e6;
+	background-color: ${props => (props.select ? '#4661e6' : '#f2f4ff')};
+	color: ${props => (props.select ? '#f2f4ff' : '#4661e6')};
 	border-radius: 7px;
 	margin-bottom: 15px;
 	margin-right: 8px;
@@ -26,16 +28,41 @@ const Category = styled.button`
 		color: white;
 	}
 `
+const categories = ['All', 'UI', 'UX', 'Enhancement', 'Bug', 'Feature']
 
-export default function FilterByCategory({ className }) {
+function FilterByCategory({ className, filterTag, filteredSuggestions }) {
+	const handleClick = event => {
+		filteredSuggestions(event.target.textContent)
+	}
 	return (
 		<ContainerCategories className={className}>
-			<Category>All</Category>
-			<Category>UI</Category>
-			<Category>UX</Category>
-			<Category>Enhancement</Category>
-			<Category>Bug</Category>
-			<Category>Feature</Category>
+			{categories.map(category => {
+				if (category === filterTag) {
+					return (
+						<Category select onClick={handleClick} key={category}>
+							{category}
+						</Category>
+					)
+				} else {
+					return (
+						<Category onClick={handleClick} key={category}>
+							{category}
+						</Category>
+					)
+				}
+			})}
 		</ContainerCategories>
 	)
 }
+
+const mapStateToProps = state => {
+	return {
+		filterTag: state.filteredSuggestions,
+	}
+}
+
+const mapDispatchToProps = {
+	filteredSuggestions,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FilterByCategory)

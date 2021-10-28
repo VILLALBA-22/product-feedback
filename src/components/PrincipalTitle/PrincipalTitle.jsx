@@ -28,7 +28,6 @@ const Subtitle = styled.h2`
 	opacity: 0.8;
 	font-size: 13px;
 `
-
 export default function PrincipalTitle({ isOpenNav, setIsOpenNav }) {
 	const refMenu = useRef(null)
 	const handleMenu = () => {

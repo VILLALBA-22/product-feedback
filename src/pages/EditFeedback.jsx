@@ -1,7 +1,9 @@
 import React from 'react'
 import Dropdown from '../components/common/Dropdown'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useParams, useHistory } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { deleteSuggestion, updateSuggestion } from '../store/actions'
 import {
 	TitleInput,
 	DescriptionInput,
@@ -15,6 +17,7 @@ import {
 	CancelBtn,
 	AddBtnForm,
 	DeleteBtn,
+	ErrorForm,
 } from '../components/common/Form'
 
 const optionsCategories = [
@@ -32,14 +35,27 @@ const optionsStatus = [
 	{ value: 'live', label: 'Live' },
 ]
 
-export default function EditFeedback() {
+function EditFeedback({ suggestions, deleteSuggestion, updateSuggestion }) {
+	let { id } = useParams()
+	let history = useHistory()
+	id = parseInt(id)
+	let currentSuggestion = suggestions.filter(sug => id === sug.id)
+	currentSuggestion = currentSuggestion[0]
 	const {
 		register,
 		handleSubmit,
 		control,
 		formState: { errors },
 	} = useForm({ mode: 'onTouched' })
-	const onSubmit = data => console.log(data)
+	const handleDelete = id => {
+		deleteSuggestion(id)
+		history.push('/')
+	}
+	const onSubmit = data => {
+		data.id = id
+		updateSuggestion(data)
+		history.push('/')
+	}
 
 	return (
 		<Container>
@@ -48,7 +64,7 @@ export default function EditFeedback() {
 					<GoBackBtn>
 						<img
 							className='icon-back'
-							src='./assets/shared/icon-arrow-left.svg'
+							src='../assets/shared/icon-arrow-left.svg'
 							alt='go back icon'
 						/>
 						Go Back
@@ -58,13 +74,18 @@ export default function EditFeedback() {
 				<Form onSubmit={handleSubmit(onSubmit)}>
 					<img
 						className='icon-form'
-						src='./assets/shared/icon-edit-feedback.svg'
+						src='../assets/shared/icon-edit-feedback.svg'
 						alt='icon add feedback'
 					/>
-					<h2 className='title-form'>Editing ‘Add a dark theme option’</h2>
+					<h2 className='title-form'>Editing ‘{currentSuggestion.title}’</h2>
 					<TitleInput>Feedback Title</TitleInput>
 					<DescriptionInput>Add a short, descriptive headline</DescriptionInput>
-					<TextField {...register('feedbackTitle')} />
+					<TextField
+						{...register('title')}
+						defaultValue={currentSuggestion.title}
+					/>
+					{errors.title && <ErrorForm>Can’t be empty</ErrorForm>}
+
 					<TitleInput>Category</TitleInput>
 					<DescriptionInput>
 						Choose a category for your feedback.
@@ -74,32 +95,54 @@ export default function EditFeedback() {
 						control={control}
 						placeholder='Category'
 						options={optionsCategories}
+						defaultValue={currentSuggestion.category}
 					/>
 					<TitleInput>Update Status</TitleInput>
 					<DescriptionInput>Change feature state </DescriptionInput>
 					<Dropdown
 						name='status'
 						control={control}
-						placeholder='Status'
 						options={optionsStatus}
+						defaultValue={currentSuggestion.status}
 					/>
 					<TitleInput>Feedback Detail</TitleInput>
 					<DescriptionInput>
 						Include any specific comments on what should be improved, added,
 						etc.
 					</DescriptionInput>
-					<TextArea {...register('feedbackDetails')} rows='3' as='textarea' />
+					<TextArea
+						{...register('description')}
+						rows='3'
+						as='textarea'
+						defaultValue={currentSuggestion.description}
+					/>
+					{errors.description && <ErrorForm>Can’t be empty</ErrorForm>}
 					<ButtonsForm>
 						<AddBtnForm type='submit' className='separate-button'>
-							Add Feedback
+							Update Feedback
 						</AddBtnForm>
-						<CancelBtn type='button' onClick={() => console.log('Test')}>
+						<CancelBtn type='button' to='/'>
 							Cancel
 						</CancelBtn>
-						<DeleteBtn type='button'>Delete</DeleteBtn>
+						<DeleteBtn type='button' onClick={() => handleDelete(id)}>
+							Delete
+						</DeleteBtn>
 					</ButtonsForm>
 				</Form>
 			</ContainerForm>
 		</Container>
 	)
 }
+
+const mapStateToProps = state => {
+	return {
+		suggestions: state.suggestions,
+	}
+}
+
+const mapDispatchToProps = {
+	deleteSuggestion,
+	updateSuggestion,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditFeedback)

@@ -36,15 +36,13 @@ const TagSuggestions = styled.p`
 	display: inline-block;
 `
 
-export default function Suggestion() {
+export default function Suggestion({ sug }) {
 	return (
-		<CustomLink to='/edit-feedback'>
+		<CustomLink to={`/edit-feedback/${sug.id}`}>
 			<SuggestionElement>
-				<TitleSuggestion>Add tags for solutions</TitleSuggestion>
-				<TextSuggestions>
-					Easier to search for solutions based on a specific stack.
-				</TextSuggestions>
-				<TagSuggestions>Enhancement</TagSuggestions>
+				<TitleSuggestion>{sug.title}</TitleSuggestion>
+				<TextSuggestions>{sug.description}</TextSuggestions>
+				<TagSuggestions>{sug.category.label}</TagSuggestions>
 			</SuggestionElement>
 		</CustomLink>
 	)

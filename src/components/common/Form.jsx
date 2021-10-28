@@ -1,5 +1,8 @@
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 import './style.css'
+
+//Common form components
 export const TitleInput = styled.h3`
 	color: #3a4374;
 	margin-top: 25px;
@@ -9,7 +12,7 @@ export const DescriptionInput = styled.p`
 `
 export const TextField = styled.input`
 	transition: all 0.5s ease-in;
-	border: 1px solid white;
+	border: 1px solid ${props => (props.isError ? '#d73737' : ' white')};
 	background: #f7f8fd;
 	border-radius: 5px;
 	margin-top: 15px;
@@ -22,6 +25,7 @@ export const TextField = styled.input`
 	}
 `
 export const TextArea = styled(TextField)`
+	border: 1px solid ${props => (props.isError ? '#d73737' : ' white')};
 	resize: none;
 `
 
@@ -95,8 +99,22 @@ export const AddBtnForm = styled.button`
 	}
 `
 
-export const CancelBtn = styled(AddBtnForm)`
+export const CancelBtn = styled(Link)`
+	font-size: 14px;
+	padding: 10px 25px;
+	font-weight: bold;
+	border-radius: 10px;
+	margin-bottom: 10px;
+	color: white;
+	border: none;
+	text-align: center;
+	text-decoration: none;
+	width: 100%;
 	background-color: #3a4374;
+	@media (min-width: 700px) {
+		width: auto;
+		margin-left: 10px;
+	}
 `
 
 export const DeleteBtn = styled(AddBtnForm)`
@@ -116,4 +134,8 @@ export const ButtonsForm = styled.div`
 	justify-content: end;
 	flex-direction: row-reverse;
 	position: relative;
+`
+
+export const ErrorForm = styled.p`
+	color: #d73737;
 `

@@ -9,7 +9,7 @@ export default function AppRouter() {
 			<Switch>
 				<Route exact path='/' component={Main} />
 				<Route exact path='/add-feedback' component={NewFeedback} />
-				<Route exact path='/edit-feedback' component={EditFeedback} />
+				<Route exact path='/edit-feedback/:id' component={EditFeedback} />
 
 				{/* <Route path='*' component={NotFound} /> */}
 			</Switch>

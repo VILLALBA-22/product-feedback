@@ -1,7 +1,7 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import Dropdown from '../components/common/Dropdown'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import {
 	TitleInput,
 	DescriptionInput,
@@ -13,8 +13,11 @@ import {
 	Form,
 	ButtonsForm,
 	CancelBtn,
+	ErrorForm,
 	AddBtnForm,
 } from '../components/common/Form'
+import { connect } from 'react-redux'
+import { createSuggestion } from '../store/actions'
 
 const options = [
 	{ value: 'feature', label: 'Feature' },
@@ -25,14 +28,21 @@ const options = [
 ]
 //selectComponent
 
-export default function NewFeedback() {
+function NewFeedback({ createSuggestion }) {
 	const {
 		register,
 		handleSubmit,
 		control,
 		formState: { errors },
 	} = useForm({ mode: 'onTouched' })
-	const onSubmit = data => console.log(data)
+	const history = useHistory()
+	const onSubmit = data => {
+		let id = Date.now()
+		data.id = id
+		data.status = { value: 'planned', label: 'Planned' }
+		createSuggestion(data)
+		history.push('/')
+	}
 
 	return (
 		<Container>
@@ -56,7 +66,11 @@ export default function NewFeedback() {
 					<h2 className='title-form'>Create New Feedback</h2>
 					<TitleInput>Feedback Title</TitleInput>
 					<DescriptionInput>Add a short, descriptive headline</DescriptionInput>
-					<TextField {...register('feedbackTitle')} />
+					<TextField
+						{...register('title', { required: true })}
+						isError={errors.title}
+					/>
+					{errors.title && <ErrorForm>Can’t be empty</ErrorForm>}
 					<TitleInput>Category</TitleInput>
 					<DescriptionInput>
 						Choose a category for your feedback.
@@ -64,20 +78,27 @@ export default function NewFeedback() {
 					<Dropdown
 						name='category'
 						control={control}
-						placeholder='Category'
 						options={options}
+						rules={{ required: true }}
+						isError={errors.category}
 					/>
 					<TitleInput>Feedback Detail</TitleInput>
 					<DescriptionInput>
 						Include any specific comments on what should be improved, added,
 						etc.
 					</DescriptionInput>
-					<TextArea {...register('feedbackDetails')} rows='3' as='textarea' />
+					<TextArea
+						{...register('description', { required: true })}
+						rows='3'
+						as='textarea'
+						isError={errors.description}
+					/>
+					{errors.description && <ErrorForm>Can’t be empty</ErrorForm>}
 					<ButtonsForm>
 						<AddBtnForm type='submit' className='separate-button'>
 							Add Feedback
 						</AddBtnForm>
-						<CancelBtn type='button' onClick={() => console.log('Test')}>
+						<CancelBtn type='button' onClick={() => history.push('/')} to='/'>
 							Cancel
 						</CancelBtn>
 					</ButtonsForm>
@@ -86,3 +107,9 @@ export default function NewFeedback() {
 		</Container>
 	)
 }
+
+const mapDispatchToProps = {
+	createSuggestion,
+}
+
+export default connect(null, mapDispatchToProps)(NewFeedback)

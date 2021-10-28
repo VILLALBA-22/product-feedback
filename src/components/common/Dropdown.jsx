@@ -80,11 +80,20 @@ const customStyles = {
 	}),
 }
 
-function Dropdown({ name, control, placeholder, options, rules, setValue }) {
+function Dropdown({
+	name,
+	control,
+	placeholder,
+	options,
+	rules,
+	setValue,
+	defaultValue,
+}) {
 	return (
 		<Controller
 			name={name}
 			control={control}
+			defaultValue={defaultValue || options[0]}
 			render={({ field }) => (
 				<Select
 					placeholder={placeholder}
@@ -92,6 +101,7 @@ function Dropdown({ name, control, placeholder, options, rules, setValue }) {
 					styles={customStyles}
 					isSearchable={false}
 					options={options}
+					defaultValue={options[0]}
 					components={{ Option: CustomOption }}
 				/>
 			)}

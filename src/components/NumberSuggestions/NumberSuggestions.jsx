@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import AddBtn from '../common/AddBtn'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 const Container = styled.div`
@@ -27,7 +28,7 @@ const TextSuggestions = styled.span`
 	font-size: 14px;
 `
 
-function NumberSuggestions() {
+function NumberSuggestions({ suggestions }) {
 	return (
 		<Container>
 			<ContainerNumber>
@@ -36,7 +37,7 @@ function NumberSuggestions() {
 					height='23'
 					alt='ideas icon'
 				/>
-				<TextSuggestions>0 Suggestions</TextSuggestions>
+				<TextSuggestions>{suggestions.length} Suggestions</TextSuggestions>
 			</ContainerNumber>
 			<Link to='/add-feedback' style={{ textDecoration: 'none' }}>
 				<AddBtn />
@@ -45,4 +46,10 @@ function NumberSuggestions() {
 	)
 }
 
-export default NumberSuggestions
+const mapStateToProps = state => {
+	return {
+		suggestions: state.suggestions,
+	}
+}
+
+export default connect(mapStateToProps)(NumberSuggestions)

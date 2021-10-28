@@ -31,7 +31,6 @@ const P = styled.p`
 	margin-bottom: 24px;
 	max-width: 410px;
 `
-
 export default function NoFeedback() {
 	return (
 		<Container>
