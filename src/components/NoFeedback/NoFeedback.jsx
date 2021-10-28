@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import AddBtn from '../common/AddBtn'
+import { Link } from 'react-router-dom'
 
 const Container = styled.div`
 	margin-top: 68px;
@@ -40,7 +41,8 @@ export default function NoFeedback() {
 				Got a suggestion? Found a bug that needs to be squashed? We love hearing
 				about new ideas to improve our app.
 			</P>
-			<AddBtn />
+                        <Link to='/add-feedback' style={{textTransform: 'none', color: 'white'}}><AddBtn /> </Link>
+			
 		</Container>
 	)
 }
